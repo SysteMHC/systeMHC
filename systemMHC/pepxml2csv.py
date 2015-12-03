@@ -1,3 +1,6 @@
+# This code is taken from
+#https://github.com/msproteomicstools/msproteomicstools
+
 #!/usr/bin/env python
 # -*- coding: utf-8  -*-
 """
@@ -46,7 +49,7 @@ def pepxml2csv(infile, outfile):
     import csv
     writer = csv.writer(open(outfile, 'wb'))
     writer.writerow(
-        ["Spectrum", "Scan number", "Peptide_Sequence", "PrecursorMass", "Massdiff", "Expect value", "Pvalue", "MatchedIons", "TotalIons", "Protein" , "ProteinDescr"])
+        ["Spectrum", "Scan number", "Peptide_Sequence", "ModSequence", "z", "PrecursorMass", "Massdiff", "Expect value", "Pvalue", "MatchedIons", "TotalIons", "Protein" , "ProteinDescr"])
     for hit in r.parse_all():
       #exp = float(hit.expect)
       #pval = float(hit.pvalue)
@@ -56,7 +59,7 @@ def pepxml2csv(infile, outfile):
       exp = "NA"
       if hasattr(hit, "expect"): exp = "%.20f"  % hit.expect
       writer.writerow(
-        [hit.spectrum_query.spectrum, hit.scan_number, hit.peptide,
+        [hit.spectrum_query.spectrum, hit.scan_number, hit.peptide, hit.modified_peptide, hit.get_assumed_charge(),
          hit.spectrum_query.precursorMass, hit.massdiff, exp, pval,
          hit.matched_ions, hit.total_ions, hit.protein, hit.protein_descr]
       )
